@@ -4,39 +4,46 @@ package com.example.turnosrotativos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.NoSuchElementException;
 
+@RestController
+@RequestMapping("/empleado")
 public class EmpleadoController {
 
     @Autowired
-    private EmpleadoRepository empleadoRepository;
+    private EmpleadoService empleadoService;
 
     @GetMapping("/{idEmpleado}")
     public ResponseEntity<Empleado> getEmpleado(@PathVariable Long idEmpleado) {
         try {
-            Empleado empleado = empleadoRepository.findById(idEmpleado).orElseThrow();
+            Empleado empleado = empleadoService.getEmpleadoById(idEmpleado);
             return new ResponseEntity<>(empleado, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    @PostMapping
+    public ResponseEntity<?> crearEmpleado(@RequestBody Empleado empleado) {
+        try {
+            Empleado nuevoEmpleado = empleadoService.crearEmpleado(empleado);
+            return new ResponseEntity<>(nuevoEmpleado, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/{idEmpleado}")
-    public ResponseEntity<Empleado> updateEmpleado(@PathVariable Long idEmpleado, @RequestBody Empleado empleado) {
-        Empleado existingEmpleado = empleadoRepository.findById(idEmpleado).orElse(null);
-        if (existingEmpleado != null) {
-            existingEmpleado.setNombre(empleado.getNombre());
-            existingEmpleado.setApellido(empleado.getApellido());
-            existingEmpleado.setDocumento(empleado.getDocumento());
-            existingEmpleado.setEmail(empleado.getEmail());
-            Empleado updatedEmpleado = empleadoRepository.save(existingEmpleado);
+    public ResponseEntity<?> updateEmpleado(@PathVariable Long idEmpleado, @RequestBody Empleado empleado) {
+        try {
+            Empleado updatedEmpleado = empleadoService.actualizarEmpleado(idEmpleado, empleado);
             return new ResponseEntity<>(updatedEmpleado, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
