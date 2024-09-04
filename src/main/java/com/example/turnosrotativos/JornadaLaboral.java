@@ -3,9 +3,11 @@ package com.example.turnosrotativos;
 import com.example.turnosrotativos.ConceptoLaboral;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "jornadas_laborales")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class JornadaLaboral {
 
     @Id
@@ -16,7 +18,7 @@ public class JornadaLaboral {
     @JoinColumn(name = "idEmpleado", nullable = false)
     private Empleado empleado;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // or CascadeType.ALL
     @JoinColumn(name = "idConcepto", nullable = false)
     private ConceptoLaboral conceptoLaboral;
 

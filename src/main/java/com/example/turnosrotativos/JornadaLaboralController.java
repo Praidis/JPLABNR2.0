@@ -26,7 +26,7 @@ public class JornadaLaboralController {
         return new ResponseEntity<>(jornadaLaboral, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<JornadaLaboral> createJornadaLaboral(@RequestBody JornadaLaboral jornadaLaboral) {
         JornadaLaboral nuevaJornadaLaboral = jornadaLaboralService.createJornadaLaboral(jornadaLaboral);
         return new ResponseEntity<>(nuevaJornadaLaboral, HttpStatus.CREATED);

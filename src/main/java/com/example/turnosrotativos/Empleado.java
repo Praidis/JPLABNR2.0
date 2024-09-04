@@ -2,9 +2,11 @@ package com.example.turnosrotativos;
 import java.util.List;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "empleados")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "jornadasLaborales"})
 public class Empleado {
 
     @Id
