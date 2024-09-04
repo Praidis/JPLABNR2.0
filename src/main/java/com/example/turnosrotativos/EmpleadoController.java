@@ -1,11 +1,10 @@
 package com.example.turnosrotativos;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -14,6 +13,12 @@ public class EmpleadoController {
 
     @Autowired
     private EmpleadoService empleadoService;
+
+    @GetMapping
+    public ResponseEntity<List<Empleado>> getAllEmpleados() {
+        List<Empleado> empleados = empleadoService.getAllEmpleados();
+        return new ResponseEntity<>(empleados, HttpStatus.OK);
+    }
 
     @GetMapping("/{idEmpleado}")
     public ResponseEntity<Empleado> getEmpleado(@PathVariable Long idEmpleado) {
@@ -25,7 +30,7 @@ public class EmpleadoController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<?> crearEmpleado(@RequestBody Empleado empleado) {
         try {
             Empleado nuevoEmpleado = empleadoService.crearEmpleado(empleado);
