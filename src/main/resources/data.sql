@@ -7,17 +7,17 @@ VALUES
 ('David', 'Lee', '33333333', 'david.lee@example.com', '1985-11-25', '2018-01-01', CURRENT_TIMESTAMP);
 
 -- Create sample conceptos laborales
-INSERT INTO concepto_laboral (hs_maximo, hs_minimo, laborable, nombre)
+INSERT INTO conceptos_laborales (hs_maximo, hs_minimo, laborable, nombre)
 VALUES
 (8, 6, 1, 'Turno Normal'),
 (6, 2, 1, 'Turno Extra'),
-(null, null, 0, 'Día Libre');
+(0, 0, 0, 'Día Libre');
 
--- Create laboral jornadas
+-- Create sample jornadas laborales
 INSERT INTO jornadas_laborales (id_empleado, id_concepto, fecha, hs_trabajadas)
 VALUES
 (1, 1, '2022-01-01', 8),
 (2, 2, '2022-01-02', 10),
 (3, 3, '2022-01-03', 12),
-(4, 4, '2022-01-04', 14),
-(5, 5, '2022-01-05', 16);
+(4, 1, '2022-01-04', 14),
+(5, 2, '2022-01-05', 16);

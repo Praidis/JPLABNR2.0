@@ -10,7 +10,6 @@ public class JornadaLaboral {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idJornada")
     private Long idJornada;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -19,7 +18,7 @@ public class JornadaLaboral {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idConcepto", nullable = false)
-    private com.example.turnosrotativos.ConceptoLaboral conceptoLaboral;
+    private ConceptoLaboral conceptoLaboral;
 
     @Column(nullable = false)
     private LocalDate fecha;
@@ -27,7 +26,6 @@ public class JornadaLaboral {
     @Column(nullable = false)
     private Integer hsTrabajadas;
 
-    // Getters y Setters
     public Long getIdJornada() {
         return idJornada;
     }
@@ -44,11 +42,11 @@ public class JornadaLaboral {
         this.empleado = empleado;
     }
 
-    public com.example.turnosrotativos.ConceptoLaboral getConceptoLaboral() {
+    public ConceptoLaboral getConceptoLaboral() {
         return conceptoLaboral;
     }
 
-    public void setConceptoLaboral(com.example.turnosrotativos.ConceptoLaboral conceptoLaboral) {
+    public void setConceptoLaboral(ConceptoLaboral conceptoLaboral) {
         this.conceptoLaboral = conceptoLaboral;
     }
 

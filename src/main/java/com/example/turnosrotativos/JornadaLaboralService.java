@@ -8,8 +8,12 @@ import java.util.List;
 @Service
 public class JornadaLaboralService {
 
+    private final JornadaLaboralRepository jornadaLaboralRepository;
+
     @Autowired
-    private JornadaLaboralRepository jornadaLaboralRepository;
+    public JornadaLaboralService(JornadaLaboralRepository jornadaLaboralRepository) {
+        this.jornadaLaboralRepository = jornadaLaboralRepository;
+    }
 
     public List<JornadaLaboral> getAllJornadasLaborales() {
         return jornadaLaboralRepository.findAll();

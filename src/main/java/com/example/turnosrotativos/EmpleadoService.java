@@ -3,75 +3,74 @@ package com.example.turnosrotativos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-
-
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class EmpleadoService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Autowired
     private EmpleadoRepository empleadoRepository;
 
-    // Crear un nuevo empleado
+    @Autowired
+    private EntityManager entityManager;
+
     @Transactional
     public Empleado crearEmpleado(Empleado empleado) {
         validarEmpleado(empleado);
         return empleadoRepository.save(empleado);
     }
 
-    // Actualizar un empleado existente
     @Transactional
-    public Empleado actualizarEmpleado(Long idEmpleado, Empleado empleado) {
-        validarEmpleado(empleado);
+    public Empleado updateEmpleado(Long idEmpleado, Empleado empleado) {
         Empleado existingEmpleado = empleadoRepository.findById(idEmpleado).orElseThrow(() ->
                 new NoSuchElementException("No se encontró el empleado con Id: " + idEmpleado));
+
+        if (!existingEmpleado.getDocumento().equals(empleado.getDocumento()) &&
+                empleadoRepository.findByDocumento(empleado.getDocumento()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un empleado con el documento ingresado.");
+        }
+
         existingEmpleado.setNombre(empleado.getNombre());
         existingEmpleado.setApellido(empleado.getApellido());
-        existingEmpleado.setDocumento(empleado.getDocumento());
         existingEmpleado.setEmail(empleado.getEmail());
+        existingEmpleado.setFechaNacimiento(empleado.getFechaNacimiento());
+        existingEmpleado.setFechaIngreso(empleado.getFechaIngreso());
+
         return empleadoRepository.save(existingEmpleado);
     }
 
-    // Eliminar un empleado
     @Transactional
     public void eliminarEmpleado(Long idEmpleado) {
         empleadoRepository.deleteById(idEmpleado);
     }
 
-    // Recuperar todos los empleados
     public List<Empleado> getAllEmpleados() {
         return empleadoRepository.findAll();
     }
 
-    // Recuperar un empleado por su ID
     public Empleado getEmpleadoById(Long idEmpleado) {
         return empleadoRepository.findById(idEmpleado).orElseThrow(() ->
                 new NoSuchElementException("No se encontró el empleado con Id: " + idEmpleado));
     }
 
-    // Validar la información de un empleado
     private void validarEmpleado(Empleado empleado) {
         if (empleado.getFechaNacimiento().isAfter(LocalDate.now().minusYears(18))) {
             throw new IllegalArgumentException("La edad del empleado no puede ser menor a 18 años.");
         }
 
-        if (empleadoRepository.findByDocumento(empleado.getDocumento()).isPresent()) {
-            throw new IllegalArgumentException("Ya existe un empleado con el documento ingresado.");
-        }
-
-        if (empleadoRepository.findByEmail(empleado.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Ya existe un empleado con el email ingresado.");
+        if (empleado.getId() == null) { // if it's a new employee
+            if (empleadoRepository.findByDocumento(empleado.getDocumento()).isPresent()) {
+                throw new IllegalArgumentException("Ya existe un empleado con el documento ingresado.");
+            }
+            if (empleadoRepository.findByEmail(empleado.getEmail()).isPresent()) {
+                throw new IllegalArgumentException("Ya existe un empleado con el email ingresado.");
+            }
         }
 
         if (empleado.getFechaIngreso().isAfter(LocalDate.now())) {
@@ -88,7 +87,6 @@ public class EmpleadoService {
         validateRequiredFields(empleado);
     }
 
-    // Validar email
     private void validateEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
@@ -101,7 +99,6 @@ public class EmpleadoService {
         }
     }
 
-    // Validar nombre o apellido
     private void validateNameOrApellido(String name) {
         String nameRegex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$";
         Pattern pat = Pattern.compile(nameRegex);
@@ -110,7 +107,7 @@ public class EmpleadoService {
             throw new IllegalArgumentException("El nombre o apellido ingresado no es válido.");
         }
     }
-    // Validar campos obligatorios
+
     private void validateRequiredFields(Empleado empleado) {
         if (empleado.getNombre() == null || empleado.getNombre().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre es un campo obligatorio.");

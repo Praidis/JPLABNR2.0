@@ -1,5 +1,5 @@
 package com.example.turnosrotativos;
-
+import java.util.List;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -32,12 +32,14 @@ public class Empleado {
     @Column(nullable = false, updatable = false)
     private LocalDate fechaCreacion;
 
+    @OneToMany(mappedBy = "empleado", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<JornadaLaboral> jornadasLaborales;
+
     @PrePersist
     protected void onCreate() {
         this.fechaCreacion = LocalDate.now();
     }
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }

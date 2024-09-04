@@ -43,12 +43,21 @@ public class EmpleadoController {
     @PutMapping("/{idEmpleado}")
     public ResponseEntity<?> updateEmpleado(@PathVariable Long idEmpleado, @RequestBody Empleado empleado) {
         try {
-            Empleado updatedEmpleado = empleadoService.actualizarEmpleado(idEmpleado, empleado);
+            Empleado updatedEmpleado = empleadoService.updateEmpleado(idEmpleado, empleado);
             return new ResponseEntity<>(updatedEmpleado, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @DeleteMapping("/{idEmpleado}")
+    public ResponseEntity<?> deleteEmpleado(@PathVariable Long idEmpleado) {
+        try {
+            empleadoService.eliminarEmpleado(idEmpleado);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
