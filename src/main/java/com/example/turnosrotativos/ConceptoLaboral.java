@@ -1,14 +1,15 @@
 package com.example.turnosrotativos;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "conceptos_laborales")
-public class conceptoLaboral {
+public class ConceptoLaboral implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idConcepto")
+    @Column(name = "id_concepto")
     private Long idConcepto;
 
     @Column(nullable = false, length = 50)
@@ -23,7 +24,7 @@ public class conceptoLaboral {
     @Column(nullable = false)
     private Boolean laborable;
 
-    // Getters y Setters
+    // Getters and Setters
     public Long getIdConcepto() {
         return idConcepto;
     }

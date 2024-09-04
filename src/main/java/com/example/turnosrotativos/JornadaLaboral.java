@@ -1,11 +1,12 @@
 package com.example.turnosrotativos;
 
+import com.example.turnosrotativos.ConceptoLaboral;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "jornadas_laborales")
-public class jornadaLaboral {
+public class JornadaLaboral {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,7 @@ public class jornadaLaboral {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idConcepto", nullable = false)
-    private com.example.turnosrotativos.conceptoLaboral conceptoLaboral;
+    private com.example.turnosrotativos.ConceptoLaboral conceptoLaboral;
 
     @Column(nullable = false)
     private LocalDate fecha;
@@ -43,11 +44,11 @@ public class jornadaLaboral {
         this.empleado = empleado;
     }
 
-    public com.example.turnosrotativos.conceptoLaboral getConceptoLaboral() {
+    public com.example.turnosrotativos.ConceptoLaboral getConceptoLaboral() {
         return conceptoLaboral;
     }
 
-    public void setConceptoLaboral(com.example.turnosrotativos.conceptoLaboral conceptoLaboral) {
+    public void setConceptoLaboral(com.example.turnosrotativos.ConceptoLaboral conceptoLaboral) {
         this.conceptoLaboral = conceptoLaboral;
     }
 
