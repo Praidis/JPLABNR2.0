@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,6 +38,8 @@ public class EmpleadoController {
             return new ResponseEntity<>(nuevoEmpleado, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ConflictException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
@@ -51,6 +54,7 @@ public class EmpleadoController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     @DeleteMapping("/{idEmpleado}")
     public ResponseEntity<?> deleteEmpleado(@PathVariable Long idEmpleado) {
         try {

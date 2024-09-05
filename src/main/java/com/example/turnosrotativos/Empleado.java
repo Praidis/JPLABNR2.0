@@ -34,7 +34,7 @@ public class Empleado {
     @Column(nullable = false, updatable = false)
     private LocalDate fechaCreacion;
 
-    @OneToMany(mappedBy = "empleado", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JornadaLaboral> jornadasLaborales;
 
     @PrePersist

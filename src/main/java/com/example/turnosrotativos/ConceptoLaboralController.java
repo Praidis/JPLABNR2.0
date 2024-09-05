@@ -26,21 +26,33 @@ public class ConceptoLaboralController {
         return new ResponseEntity<>(conceptoLaboral, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<ConceptoLaboral> createConceptoLaboral(@RequestBody ConceptoLaboral conceptoLaboral) {
-        ConceptoLaboral nuevaConceptoLaboral = conceptoLaboralService.createConceptoLaboral(conceptoLaboral);
-        return new ResponseEntity<>(nuevaConceptoLaboral, HttpStatus.CREATED);
+        try {
+            ConceptoLaboral nuevaConceptoLaboral = conceptoLaboralService.createConceptoLaboral(conceptoLaboral);
+            return new ResponseEntity<>(nuevaConceptoLaboral, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ConceptoLaboral> updateConceptoLaboral(@PathVariable Long id, @RequestBody ConceptoLaboral conceptoLaboral) {
-        ConceptoLaboral updatedConceptoLaboral = conceptoLaboralService.updateConceptoLaboral(id, conceptoLaboral);
-        return new ResponseEntity<>(updatedConceptoLaboral, HttpStatus.OK);
+        try {
+            ConceptoLaboral updatedConceptoLaboral = conceptoLaboralService.updateConceptoLaboral(id, conceptoLaboral);
+            return new ResponseEntity<>(updatedConceptoLaboral, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteConceptoLaboral(@PathVariable Long id) {
-        conceptoLaboralService.deleteConceptoLaboral(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            conceptoLaboralService.deleteConceptoLaboral(id);
+            return ResponseEntity.noContent().build();
+        } catch (ConflictException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 }
