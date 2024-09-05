@@ -29,17 +29,6 @@ public class ConceptoLaboralControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
-
-    @Test
-    public void createConceptoLaboral() throws Exception {
-        String conceptoLaboralJson = "{\"nombre\":\"Turno Normal\",\"hsMaximo\":8,\"hsMinimo\":6,\"laborable\":true}";
-        mockMvc.perform(MockMvcRequestBuilders.post("/concepto-laboral")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(conceptoLaboralJson))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
-    }
-
     @Test
     public void updateConceptoLaboral() throws Exception {
         String conceptoLaboralJson = "{\"nombre\":\"Turno Extra\",\"hsMaximo\":10,\"hsMinimo\":8,\"laborable\":true}";

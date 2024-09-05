@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -29,7 +31,11 @@ public class JornadaLaboralController {
     @PostMapping("/new")
     public ResponseEntity<JornadaLaboral> createJornadaLaboral(@RequestBody JornadaLaboral jornadaLaboral) {
         JornadaLaboral nuevaJornadaLaboral = jornadaLaboralService.createJornadaLaboral(jornadaLaboral);
-        return new ResponseEntity<>(nuevaJornadaLaboral, HttpStatus.CREATED);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return new ResponseEntity<>(nuevaJornadaLaboral, headers, HttpStatus.CREATED.value());
     }
 
     @PutMapping("/{id}")

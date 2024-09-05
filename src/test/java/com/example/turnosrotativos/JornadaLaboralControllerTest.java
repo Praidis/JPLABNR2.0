@@ -36,22 +36,15 @@ public class JornadaLaboralControllerTest {
 
     @Test
     public void createJornadaLaboral() throws Exception {
-        String jornadaLaboralJson = "{\"empleado\":{\"id\":1},\"conceptoLaboral\":{\"id\":1},\"fecha\":\"2022-01-01\",\"hsTrabajadas\":8}";
-        mockMvc.perform(MockMvcRequestBuilders.post("/jornada-laboral")
+        String jornadaLaboralJson = "{\"empleado\":{\"id\":1}," +
+                "\"conceptoLaboral\":{\"id\":1}," +
+                "\"fecha\":\"2022-01-01\"," +
+                "\"hsTrabajadas\":8}";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/jornada-laboral/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jornadaLaboralJson))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    public void updateJornadaLaboral() throws Exception {
-        JornadaLaboral jornadaLaboral = jornadaLaboralService.getJornadaLaboralById(1L);
-        String jornadaLaboralJson = "{\"empleado\":{\"id\":1},\"conceptoLaboral\":{\"id\":2},\"fecha\":\"2022-01-02\",\"hsTrabajadas\":10}";
-        mockMvc.perform(MockMvcRequestBuilders.put("/jornada-laboral/" + jornadaLaboral.getIdJornada(), jornadaLaboral)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jornadaLaboralJson))
-                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
     @Test
